@@ -63,6 +63,7 @@ function App() {
   }
 
   const booleanFilter = (column_name, filter_condition) => {
+    console.log(column_name, filter_condition, value);
     switch(filter_condition) {
       case 'Is null':
         return setFilterData(tableData.filter((data) => data[column_name] === null));
@@ -72,6 +73,22 @@ function App() {
         return setFilterData(tableData.filter((data) => data[column_name].toString().toLocaleLowerCase() === value.toLocaleLowerCase()));
     }
   }
+
+  const enumFilter = (column_name, filter_condition) => {
+    console.log(column_name, filter_condition, value);
+    switch(filter_condition) {
+      case 'In':
+        return setFilterData(tableData.filter((data) => data[column_name].toLocaleLowerCase().includes(value.toLocaleLowerCase())));
+      case 'Equals':
+        return setFilterData(tableData.filter((data) => data[column_name].toLocaleLowerCase() === value.toLocaleLowerCase()));
+      case 'Not equal':
+        return setFilterData(tableData.filter((data) => data[column_name].toLocaleLowerCase() !== value.toLocaleLowerCase()));
+      case 'Not in':
+        return setFilterData(tableData.filter((data) => !data[column_name].toLocaleLowerCase().includes(value.toLocaleLowerCase())));
+      case 'Is null':
+        return setFilterData(tableData.filter((data) => data[column_name] === null));
+    }
+  };
 
   const handleSearch = (selectedOption) => {
     console.log(selectedOption);
@@ -83,13 +100,7 @@ function App() {
         case 'boolean':
             return booleanFilter(selectedOption.column_filter, selectedOption.filter_condition);
         case 'enum':
-            return <select onChange={handleChange} name='enum_filter'>
-                        <option value="In">In</option>
-                        <option value="Equals">Equals</option>
-                        <option value="Not equal">Not equal</option>
-                        <option value="Not in">Not in</option>
-                        <option value="Is null">Is null</option>
-                    </select>
+            return enumFilter(selectedOption.column_filter, selectedOption.filter_condition);
         default:
             return <input type="text" placeholder="Enter text" />
      }

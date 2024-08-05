@@ -13,7 +13,7 @@ function Filter({ handleSearch, setValue }) {
         'id': 'number',
         'name': 'string',
         'age': 'number',
-        'role': 'string',
+        'role': 'enum',
         'hireDate': 'date',
         'isActive': 'boolean',
         'salary': 'number',
@@ -81,11 +81,23 @@ function Filter({ handleSearch, setValue }) {
                             <option value="true">true</option>
                             <option value="false">false</option>
                         </select>
-            case 'enum':
-                return <select onChange={handleChange}>
-                            <option value="User">User</option>
-                            <option value="Admin">Admin</option>
+            case 'enum': 
+                if(selectedOption.column_filter === 'role'){
+                return <select onChange={(e) => setValue(e.target.value)}>
+                            <option value="Engineer">Engineer</option>
+                            <option value="Manager">Manager</option>
+                            <option value="Intern">Intern</option>
+                            <option value="Director">Director</option>
+                            <option value="Designer">Designer</option>
+                            <option value="Senior Manager">Senior Manager</option>
+                            <option value="Product">Product</option>
                         </select>
+                }
+                return <select onChange={(e) => setValue(e.target.value)}>
+                        <option value="User">User</option>
+                        <option value="Admin">Admin</option>
+                         </select>
+               
         }
     }
 
